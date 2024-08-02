@@ -28,7 +28,7 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
     $env:FLASK_APP = "app.py"
    ```
 ***IMPORTANT! Refer to #2 in "Important Notes and Future Implementations" before continuing!***
-6. Run Flask app
+7. Run Flask app
    ```sh
     flask run
    ```
@@ -82,6 +82,7 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
 
 2. **ENVIRONMENT VARIABLES:**
    - Due to privacy policy, the `.env` file, which contains all the environment variables, cannot be pushed directly to GitHub. The most practical and foolproof method is to use this template to fill out the variable values and then save it as `.env` in the root directory of the project folder:
+
      ```
      AZURE_OAI_TYPE = "azure"
      AZURE_OAI_VERSION = "2024-02-01"
