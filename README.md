@@ -121,6 +121,8 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
 
 ## DEPLOYMENT
 ***AZURE WEB APP DEPLOYMENT***
+
+
 I have attempted to deploy on Azure as a web app (both with methods through GitHub Actions and Docker), however I came across the problem that Stryker firewall prevents connection to the TW Oracle SQL since it is being hosted virtually. As a potential solution, I sucessfully deployed the app under the already established virtual network within the StrykerAnalytics resource group. I could not directly verify that the virtual network was the solution, however, since I received this error:
 ```sh
  cx_Oracle.DatabaseError: DPI-1047: Cannot locate a 64-bit Oracle Client library
@@ -130,6 +132,8 @@ I reached 2 solutions:
 2. Attempt to deploy through the same resource group's virtual machine. I unfortunately could not come to a solution of accomplishing this.
 
 ***PYINSTALLER DEPLOYMENT***
+
+
 To avoid the issue of the Oracle Client and Stryker's firewall, I also looked into local deployment, directly running the Flask app without a Python interpreter. This method would provide a simple .exe file to run the app locally and should bypass any issues with connecting with the Oracle SQL database, as long as the device is connected to the VPN. I have spent quite some time debugging this method since it requires a lot of fine-tuning according to how your Flask app works. This method, however, presented more problems such as:
 1. Since the entire project folder is condensed into a single exe file, referencing and updating the csv and jsonl files for the TW schema and verified queries requires temporary paths to be created to these data sources.
 2. Since it would be local deployment, the verified queries storage would not be synced with other users, so growth of the "TrackWise knowledge" would be entirely based on how often the single user utilizes the app.
