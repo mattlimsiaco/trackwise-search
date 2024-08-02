@@ -27,8 +27,8 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
    ```sh
     $env:FLASK_APP = "app.py"
    ```
-***IMPORTANT! Refer to #2 in "Important Notes and Future Implementations" before continuing!***
-7. Run Flask app
+7. ***IMPORTANT! Refer to #2 in "Important Notes and Future Implementations" before continuing!***
+   Run Flask app
    ```sh
     flask run
    ```
