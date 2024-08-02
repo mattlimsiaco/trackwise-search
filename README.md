@@ -131,6 +131,8 @@ I reached 2 solutions:
 1. Directly install the 64-bit Oracle Client library to the Azure web app or download it directly within the local app's root directory. After attempting both methods of installation, the error still remained whenever running the app.
 2. Attempt to deploy through the same resource group's virtual machine. I unfortunately could not come to a solution of accomplishing this.
 
+
+
 ***PYINSTALLER DEPLOYMENT***
 
 
