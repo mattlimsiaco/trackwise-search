@@ -27,6 +27,7 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
    ```sh
     $env:FLASK_APP = "app.py"
    ```
+***IMPORTANT! Refer to #2 in "Important Notes and Future Implementations" before continuing!***
 6. Run Flask app
    ```sh
     flask run
@@ -46,7 +47,8 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
 4. **Update Data**
    * Functionality to update the table and column names to match current TrackWise format.
 
-### Query Generation
+
+### Query Generation Functionality
 ![Functionality Pipeline](static/img/functionality.png)
 
 1. **User Input:**
@@ -69,4 +71,29 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
    * With the base prompt, the user input, the relevant table and column names, and the enhanced context, the model finally generates an Oracle SQL query.
 
 
-### Important Notes and Fixes
+## Important Notes and Future Implementations
+1. **METHOD FOR QUERY GENERATION:** The backend is currently being run through 2 iterations of OpenAI, 1st to extract potential table and column names, 2nd to finally generate the query. I have yet to discover a more efficient method of extracting potential table and column names, however, without the double implementation, I assume there will be a cut in half of the cost of upkeep with the usage of OpenAI's API. There may also be a decrease in runtime if parsing/extraction is done manually.
+    **My original method:** Utilize LangChain to automatically run steps 4 and 5 in the "Query Generation" visualization. LangChain would directly connect to the TW Oracle SQL database and generate a query after finding the respective table names and column names. While this seems simple, it resulted in significantly long runtimes, averaging 50-60 seconds and lack of ability to tweak the efficiency.
+2. **ENVIRONMENT VARIABLES:** Due to privacy policy, the .env file which contains all the environment variables cannot be pushed directly to GitHub. The most practical and foolproof method is to use this template to fill out the variable values then save it as ".env" in the root directory of the project folder:
+
+    AZURE_OAI_TYPE = "azure"
+    AZURE_OAI_VERSION = "2024-02-01"
+    AZURE_OAI_ENDPOINT= "https://strykeranalyticsopenai.openai.azure.com/"
+    AZURE_OAI_KEY= 
+    AZURE_OAI_CHAT= "gpt-35-turbo"
+    AZURE_OAI_EMBEDDING= "stryker_embedding_ai"
+
+    ORACLE_DB = 
+    ORACLE_HOST = 
+    ORACLE_PORT = 
+    ORACLE_USERNAME = 
+    ORACLE_PASSWORD = 
+
+The AZURE_OAI_KEY can be found in the Azure portal, under the OpenAI service. The best alternative is to store them as secrets within Azure and automate an access pattern to automatically generate a .env file.
+3. **VECTOR DATABASE STORAGE:** Currently the vector embeddings for the TW Database schema and verified queries are stored as a csv and jsonl file, respectively. These should instead be stored as established vector databases (preferably within Azure) and utilized as index tables for cosine similarity search. While this may decrease the runtime of the app, it mitigates a lot of problems relating to local storage, scalability, and deployment.
+4. **UPDATE DATA BUTTON:** The "Update Data" button is completely free use by anybody. This is a problem if the app is running on a web server, since pressing the button without letting it complete fully (which takes on average 10 minutes) results in an incomplete TW database schema since all table and column vector embeddings are cleared initially then filled according to the TW database metadata. This results in the app being non-functional if the user requests data that is not a part of the TW database schema. Some alternatives could be to implement admin access to this button, or simply remove the button entirely and update the metadata exclusively through the backend in the case that the TW database gets updated.
+
+
+## DEPLOYMENT
+***AZURE WEB APP DEPLOYMENT***
+   1. Stryker firewall on the TW database. I 
