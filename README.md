@@ -28,47 +28,57 @@ trackwise-search is an NLP to SQL tool for the TrackWise Oracle SQL Database by 
     $env:FLASK_APP = "app.py"
    ```
 7. ***IMPORTANT! Refer to #2 in "Important Notes and Future Implementations" before continuing!***
-   Run Flask app
    ```sh
     flask run
    ```
 
 ## Features
+
 ![Frontend](static/img/frontend.png)
 
 1. **QUERY Tab**
-   * Input a natural language prompt in the chatbox in the bottom to generate a query tailored to the TrackWise Oracle SQL database
-   * Verify that the query is correct by checking the box. The user input, generated query, and their respective vector embeddings are then stored in the backend for future reference.
+   - **Natural Language Querying:** Enter a natural language prompt in the chatbox to generate a SQL query tailored for the TrackWise Oracle SQL database.
+   - **Query Verification:** Review and confirm the generated query by checking the verification box. Both the user input and the generated query, along with their vector embeddings, are stored in the backend for future reference.
+
 2. **DATA Tab**
-   * Displays a preview of the data extracted after running the generated query on the TrackWise database.
-   * Features an "Export Data" button to save the extracted data locally as an Excel file.
+   - **Data Preview:** View a snapshot of the data extracted by executing the generated query on the TrackWise database.
+   - **Export Functionality:** Use the "Export Data" button to save the extracted data locally as an Excel file.
+
 3. **Tooltips**
-   * Provides general knowledge on usage and optimizing results (specificity of prompts).
+   - **Usage Guidance:** Access tooltips that offer insights into using the app effectively and optimizing results by providing specific prompt guidelines.
+
 4. **Update Data**
-   * Functionality to update the table and column names to match current TrackWise format.
+   - **Database Synchronization:** Update the table and column names to reflect the latest TrackWise schema format, ensuring your data remains current and accurate.
+
 
 
 ### Query Generation Functionality
+
 ![Functionality Pipeline](static/img/functionality.png)
 
-1. **User Input:**
-   * User input is read in and sent to the backend
-2. **Similarity Search Through Verified Queries:**
-   * User input is converted to a vector embedding via AzureOpenAIEmbeddings
-   * K most similar queries are found from the verified query database
-      * **NOTE:** Verified queries (user's query, generated sql query, user query embedding, sql query embedding) are currently stored as a jsonl file. This should instead be stored within a vector database for scalability and efficiency.
-3. **Retrieval Of Most Similar Queries:**
-   * K most similar queries are returned as **Enhanced Context**
-4. **Extracting Most Relevant Tables and Columns, Adding to Model Context**
-   * OpenAI determines "possible" k number of tables and columns from the user's input
-   * The actual k number of table names are found from the TrackWise schema (which is an already established csv file that contains all the vector embeddings of the table names, respective column names, and respective data types) based on the "possible" table names given from OpenAI by cosine similarity search.
-      * **NOTE:** As stated before, the storage of the TrackWise schema is not optimal as it is stored locally, instead it should be within an established vector database on the cloud, such as Azure.
-   * After determining the actual table names, the "possible" columns go through the same process as the tables, this time limited to the scope of the tables.
-   * The k number of most relevant table and column names are then fed into the OpenAI context. 
-   * Retrieval Augmented Generation is implemented with the inclusion of the **Enhanced Context** in the model's context, which contains possible matches of previous queries.
-      * **NOTE:** Feeding a decreased scope with just strings of most relevant table and column names into the context served a better approach than directly searching through the entire TrackWise schema for the correct table and column names as doing this previously with LangChain took around 50-60 seconds to find table and column names.
-5. **Query Generation:**
-   * With the base prompt, the user input, the relevant table and column names, and the enhanced context, the model finally generates an Oracle SQL query.
+1. **User Input**
+   - **Input Handling:** User input is captured and sent to the backend for processing.
+
+2. **Similarity Search Through Verified Queries**
+   - **Vector Embedding:** Convert user input into a vector embedding using AzureOpenAIEmbeddings.
+   - **Find Similar Queries:** Identify the K most similar queries from the verified query database.
+     - **NOTE:** Currently, verified queries (including user queries, generated SQL queries, and their embeddings) are stored in a JSONL file. For improved scalability and efficiency, consider storing them in a vector database.
+
+3. **Retrieval of Most Similar Queries**
+   - **Enhanced Context:** Return the K most similar queries as **Enhanced Context** for further processing.
+
+4. **Extracting Relevant Tables and Columns**
+   - **Determine Tables and Columns:** OpenAI suggests a list of potential tables and columns based on the user's input.
+   - **Match with TrackWise Schema:** Locate the actual table names in the TrackWise schema (stored as a CSV file containing vector embeddings of table names, columns, and data types) using cosine similarity search.
+     - **NOTE:** The local storage of the TrackWise schema is not ideal. For better performance, consider using a cloud-based vector database such as Azure.
+   - **Refine Column Selection:** Apply the same process to find relevant columns, limited to the identified tables.
+   - **Model Context Enhancement:** Feed the K most relevant table and column names into the OpenAI context. 
+   - **Retrieval Augmented Generation:** Implement Retrieval Augmented Generation with the **Enhanced Context** to improve query generation. 
+     - **NOTE:** Providing a reduced scope with the most relevant table and column names is more efficient than searching the entire TrackWise schema. Previous methods using LangChain took around 50-60 seconds for this process.
+
+5. **Query Generation**
+   - **Generate Query:** Using the base prompt, user input, relevant table and column names, and the enhanced context, the model generates the final Oracle SQL query.
+
 
 
 ## Important Notes and Future Implementations
