@@ -140,4 +140,4 @@ To avoid the issue of the Oracle Client and Stryker's firewall, I also looked in
 1. Since the entire project folder is condensed into a single exe file, referencing and updating the csv and jsonl files for the TW schema and verified queries requires temporary paths to be created to these data sources.
 2. Since it would be local deployment, the verified queries storage would not be synced with other users, so growth of the "TrackWise knowledge" would be entirely based on how often the single user utilizes the app.
 
-Here is a link to the official documentation: [Link Text](https://pyinstaller.org/en/stable/)
+Here is a link to the official documentation: https://pyinstaller.org/en/stable/
