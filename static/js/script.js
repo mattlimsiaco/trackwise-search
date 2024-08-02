@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     "3) Use specific terminology for DATE queries (e.g., DATE OPENED, DATE CLOSED).\n\n" +
     "4) Structure queries logically with record type, field name, and specific value (e.g., PFA Assessment, FDA Reporting Decision, \"to be reported\")."
 
-
-
     const helpTooltipText = "QUERY Tab:\nInitiate a search using natural language prompts, which are automatically translated into SQL queries for database retrieval.\n\n" +
     "DATA Tab:\nRetrieve and analyze TrackWise data based on the generated SQL queries.";
 
@@ -20,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
         tooltip.textContent = text;
     }
 
+
+    // mouseover functionality for tooltips
     helpButton.addEventListener('mouseover', () => {
         updateTooltip(helpTooltipText);
     });
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTooltip(updateDataTooltipText);
     });
 
+    // functionality for update and export data buttons
     document.getElementById('update-data-btn').addEventListener('click', function() {
         updateData();
     });
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         exportData();
     });
 
+    // sho
     function checkTableExistence() {
         var table = document.querySelector('table.data-table.display.responsive');
         if (table) {
@@ -48,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('export-data-btn').style.display = 'none';
         }
     }
-
     checkTableExistence();
 
 
@@ -97,6 +98,7 @@ function hideChatBox() {
     chatBox.classList.add('hidden');
 }
 
+// can optimize this to not have global variable
 let lastUserInput = ''; 
 
 function sendMessage() {
